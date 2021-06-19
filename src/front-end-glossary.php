@@ -82,6 +82,11 @@ function feg_options_html() {
 		body {
 			background-color: #f1f1f1 !important;
 		}
+
+		.item {
+			padding: 0 .25rem;
+			line-height: 1.5;
+		}
 	</style>
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
 	<div class="wrap">
@@ -128,13 +133,19 @@ function feg_shortcode() {
 	$json = json_decode(get_option(DATA), true);
 	$result = "<ul>\n";
 	foreach ($json as $entry) {
-		$result .= "<li><p>{$entry['s']} / {$entry['j']} / {$entry['c']} : ";
-		$result .= "<span class='en-us-only'>{$entry['d']}</span>";
-		$result .= "<span class='zh-tw-only'>{$entry['t']}</span>";
-		if ($entry['e'] != '') {
-			$result .= "<br><span class='zh-tw'>{$entry['e']}</span>";
+		if ($entry['j'] == '') $entry['j'] = '？';
+		$id = str_replace(' ', '-', $entry['s']);
+		if ($entry['a']) {
+			$result .= "<li><p><a id='glossary-$id'>{$entry['s']}</a> : ";
+		} else {
+			$result .= "<li><p><a id='glossary-$id'>{$entry['s']} / {$entry['j']} / {$entry['c']}</a> : ";
 		}
-		$result .= "</p></li>\n";
+		$result .= "<span class='en-us-only cross-ref'>{$entry['d']}</span>";
+		$result .= "<span class='cross-ref'><span class='zh-tw-only'>{$entry['t']}</span>";
+		if ($entry['e'] != '') {
+			$result .= "<br><span class='zh-tw feg-exp'>{$entry['e']}</span>";
+		}
+		$result .= "</span></p></li>\n";
 	}
 	$result .= "</ul>";
 	return $result;
