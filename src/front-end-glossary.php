@@ -64,6 +64,29 @@ function feg_head() {
 
 add_action('wp_head', 'feg_head', 1);
 
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+// 後端轉換
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+// function glo_transform(string $content) {
+// 	global $TRP_LANGUAGE;
+
+// 	// 載入文件
+// 	$doc = new DOMDocument();
+// 	libxml_use_internal_errors(true); // 關閉跟 HTML5 有關的警告
+// 	$doc->loadHTML($content);
+// 	$body = $doc->getElementsByTagName('body')->item(0);
+
+// 	// 輸出結果
+// 	$html = '';
+//     foreach ($body->childNodes as $node) $html .= $doc->saveHTML($node);
+// 	$html = str_replace('-->', '--&gt;', $html);
+	
+// 	return "<!-- 測試 $TRP_LANGUAGE $html -->" . $content;
+// }
+// add_filter('the_content', 'glo_transform', PHP_INT_MAX);
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 // Options
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -138,7 +161,7 @@ function feg_shortcode() {
 		if ($entry['a']) {
 			$result .= "<li><p><a id='glossary-$id'>{$entry['s']}</a> : ";
 		} else {
-			$result .= "<li><p><a id='glossary-$id'>{$entry['s']} / {$entry['j']} / {$entry['c']}</a> : ";
+			$result .= "<li><p><a id='glossary-$id'>{$entry['s']} / <span lang='ja'>{$entry['j']}</span> / {$entry['c']}</a> : ";
 		}
 		$result .= "<span class='en-us-only cross-ref'>{$entry['d']}</span>";
 		$result .= "<span class='cross-ref'><span class='zh-tw-only'>{$entry['t']}</span>";
