@@ -106,6 +106,8 @@
 	tip.className = "feg-popover";
 	tip.id = "feg-popover";
 	tip.setAttribute("role", "tooltip");
+	// 內容本身已經是當前語言；否則 TranslatePress 的動態翻譯會先清空新插入的文字，等 AJAX 查完翻譯才填回來
+	tip.setAttribute("data-no-dynamic-translation", "");
 	tip.hidden = true;
 	document.body.append(tip);
 
