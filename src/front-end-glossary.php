@@ -3,11 +3,18 @@
 /**
  * Plugin Name: Front-end Glossary
  * Description: Create glossary tooltips using front-end rendering, maximizing compatibility with other plugins.
+ * Version: 1.0.0
  * Author: Mu-Tsun Tsai
+ * Requires at least: 5.8
+ * Update URI: https://github.com/MuTsunTsai/front-end-glossary
  */
 
 define('DATA', 'feg_data');
 define('VER', 'feg_data_version');
+define('FEG_FILE', __FILE__);
+
+require_once __DIR__ . '/inc/class-feg-updater.php';
+FEG_Updater::init();
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 // Activation
@@ -51,12 +58,40 @@ add_action('rest_api_init', function () {
 
 function feg_head() {
 	$version = get_option(VER);
+	// 加上外掛版本號，更新後瀏覽器才不會繼續使用快取中的舊腳本
+	$plugin_version = get_file_data(FEG_FILE, array('Version' => 'Version'))['Version'];
 ?>
-	<script src="<?= plugin_dir_url(__FILE__) ?>js/main.js" async defer data-url="<?= esc_attr(get_rest_url(null, "front-end-glossary/$version")) ?>"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" defer></script>
+	<script src="<?= plugin_dir_url(__FILE__) ?>js/main.js?ver=<?= esc_attr($plugin_version) ?>" defer data-url="<?= esc_attr(get_rest_url(null, "front-end-glossary/$version")) ?>"></script>
 	<style>
+		/* 預設樣式；佈景主題的樣式表載入得比較晚，可以直接覆寫 */
 		.feg {
 			border-bottom: 1px dashed gray;
 			white-space: nowrap;
+		}
+
+		.feg-popover {
+			z-index: 1080;
+			max-width: min(20rem, calc(100vw - 1rem));
+			padding: .5rem .75rem;
+			font-size: .875rem;
+			background: #fff;
+			border: 1px solid rgba(0, 0, 0, .2);
+			box-shadow: 0 .25rem .5rem rgba(0, 0, 0, .15);
+		}
+
+		.feg-popover[hidden] {
+			display: none;
+		}
+
+		.feg-popover__title {
+			display: block;
+			font-weight: bold;
+		}
+
+		.feg-popover__more {
+			display: block;
+			margin-top: .25rem;
 		}
 	</style>
 <?php

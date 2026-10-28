@@ -1,0 +1,38 @@
+# 推送 v* tag 時打包外掛，並把 front-end-glossary.zip 發佈為 GitHub Release；
+# 網站上的外掛會透過 src/inc/class-feg-updater.php 偵測到新版本。
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: 檢查版本號
+        run: node scripts/package.mjs --check "${GITHUB_REF_NAME#v}"
+
+      - name: PHP 語法檢查
+        run: find src -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - run: pnpm package
+
+      - uses: softprops/action-gh-release@v3
+        with:
+          files: dist/front-end-glossary.zip
+          generate_release_notes: true

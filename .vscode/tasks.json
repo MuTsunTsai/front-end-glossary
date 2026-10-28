@@ -6,15 +6,7 @@
 		{
 			"label": "build",
 			"type": "shell",
-			"command": "zip",
-			"args": [
-				"-r",
-				"../dist/${workspaceFolderBasename}.zip",
-				"*"
-			],
-			"options": {
-				"cwd": "${workspaceFolder}/src"
-			},
+			"command": "pnpm package",
 			"presentation": {
 				"reveal": "never"
 			},
