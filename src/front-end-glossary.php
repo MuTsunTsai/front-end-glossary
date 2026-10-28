@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Front-end Glossary
  * Description: Create glossary tooltips using front-end rendering, maximizing compatibility with other plugins.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Mu-Tsun Tsai
  * Requires at least: 5.8
  * Update URI: https://github.com/MuTsunTsai/front-end-glossary
